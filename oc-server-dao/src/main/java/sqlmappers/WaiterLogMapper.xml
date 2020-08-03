@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.waiter.WaiterLogMapper" >
+  <resultMap id="BaseResultMap" type="com.oc.domain.waiter.WaiterLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR" />
+    <result column="team_code" property="teamCode" jdbcType="INTEGER" />
+    <result column="waiter_name" property="waiterName" jdbcType="VARCHAR" />
+    <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tenant_code, team_code, waiter_name, waiter_code, ip, status, `type`, create_date
+  </sql>
+
+  <insert id="insertSelective" parameterType="com.oc.domain.waiter.WaiterLog" >
+    insert into oc_waiter_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tenantCode != null" >
+        tenant_code,
+      </if>
+      <if test="teamCode != null" >
+        team_code,
+      </if>
+      <if test="waiterName != null" >
+        waiter_name,
+      </if>
+      <if test="waiterCode != null" >
+        waiter_code,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+        create_date,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tenantCode != null" >
+        #{tenantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="teamCode != null" >
+        #{teamCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waiterName != null" >
+        #{waiterName,jdbcType=VARCHAR},
+      </if>
+      <if test="waiterCode != null" >
+        #{waiterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      	now(),
+    </trim>
+  </insert>
+  
+</mapper>

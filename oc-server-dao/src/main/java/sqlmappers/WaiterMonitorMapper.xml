@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.waiter.WaiterMonitorMapper">
+    <resultMap id="BaseResultMap" type="com.oc.domain.waiter.WaiterMonitor">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="team_code" property="teamCode" jdbcType="INTEGER"/>
+        <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR"/>
+        <result column="waiter_name" property="waiterName" jdbcType="VARCHAR"/>
+        <result column="reception_count" property="receptionCount" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="online_time" property="onlineTime" jdbcType="BIGINT"/>
+        <result column="waiter_hang_time" property="waiterHangTime" jdbcType="BIGINT"/>
+        <result column="waiter_busy_time" property="sysBusyTime" jdbcType="BIGINT"/>
+        <result column="sys_busy_time" property="sysBusyTime" jdbcType="BIGINT"/>
+        <result column="status_update_time" property="statusUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="service_begin_time" property="serviceBeginTime" jdbcType="TIMESTAMP"/>
+        <result column="service_end_time" property="serviceEndTime" jdbcType="TIMESTAMP"/>
+        <result column="create_date" property="createDate" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, tenant_code, team_code, waiter_code, waiter_name, reception_count, status, online_time,
+      waiter_busy_time, waiter_hang_time, sys_busy_time, status_update_time, service_begin_time, service_end_time,
+      create_date
+    </sql>
+
+    <select id="obtainYesterdayWaiterMonitor" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from oc_waiter_monitor
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and create_date = date_sub(CURDATE(), interval 1 day)
+        and status != 4
+        and team_code = #{teamCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="obtainWaiterMonitorOfDay" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"></include>
+      from oc_waiter_monitor
+      where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+      and create_date = CURDATE()
+    </select>
+
+    <insert id="insertSelective" parameterType="com.oc.domain.waiter.WaiterMonitor">
+        insert into oc_waiter_monitor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="teamCode != null">
+                team_code,
+            </if>
+            <if test="waiterCode != null">
+                waiter_code,
+            </if>
+            <if test="waiterName != null">
+                waiter_name,
+            </if>
+            reception_count,
+            <if test="status != null">
+                status,
+            </if>
+            online_time,
+            waiter_busy_time,
+            waiter_hang_time,
+            sys_busy_time,
+            status_update_time,
+            service_begin_time,
+            create_date,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tenantCode != null">
+                #{tenantCode,jdbcType=VARCHAR},
+            </if>
+            <if test="teamCode != null">
+                #{teamCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waiterCode != null">
+                #{waiterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waiterName != null">
+                #{waiterName,jdbcType=VARCHAR},
+            </if>
+            #{receptionCount,jdbcType=INTEGER},
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            0,
+            0,
+            0,
+            0,
+            NOW(),
+            NOW(),
+            CURDATE(),
+        </trim>
+    </insert>
+
+    <update id="updateStatus">
+        update oc_waiter_monitor
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test='status != null and status == "4"'>
+                service_end_time = now(),
+            </if>
+            status_update_time = now(),
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and create_date = CURDATE()
+        and team_code = #{teamCode,jdbcType=INTEGER}
+    </update>
+
+    <update id="incrReception">
+        update oc_waiter_monitor
+        <set>
+            reception_count = reception_count + 1,
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and create_date = CURDATE()
+        and team_code = #{teamCode,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateTime">
+        update oc_waiter_monitor
+        <set>
+            <choose>
+                <when test='beforeStatus == "1"'>
+                    online_time = online_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(status_update_time),
+                </when>
+                <when test='beforeStatus == "2"'>
+                    waiter_busy_time = waiter_busy_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(status_update_time),
+                </when>
+                <when test='beforeStatus == "3"'>
+                    waiter_hang_time = waiter_hang_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(status_update_time),
+                </when>
+            </choose>
+            <if test='afterStatus == "4"'>
+                service_end_time = now(),
+            </if>
+            status_update_time = now(),
+            status = #{afterStatus,jdbcType=VARCHAR},
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and create_date = CURDATE()
+        and team_code = #{teamCode,jdbcType=INTEGER}
+    </update>
+
+    <update id="repairCurDateMonitor">
+        update oc_waiter_monitor
+        <set>
+            <choose>
+                <when test='status == "1"'>
+                    online_time = online_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(CURDATE()),
+                </when>
+                <when test='status == "2"'>
+                    waiter_busy_time = waiter_busy_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(CURDATE()),
+                </when>
+                <when test='status == "3"'>
+                    waiter_hang_time = waiter_hang_time + UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(CURDATE()),
+                </when>
+            </choose>
+            service_begin_time = CURDATE(),
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and create_date = CURDATE()
+        and team_code = #{teamCode,jdbcType=INTEGER}
+    </update>
+
+    <update id="repairYesterdayMonitor">
+        update oc_waiter_monitor
+        <set>
+            <choose>
+                <when test='status == "1"'>
+                    online_time = online_time + UNIX_TIMESTAMP(CURDATE()) - UNIX_TIMESTAMP(status_update_time),
+                </when>
+                <when test='status == "2"'>
+                    waiter_busy_time = waiter_busy_time + UNIX_TIMESTAMP(CURDATE()) -
+                    UNIX_TIMESTAMP(status_update_time),
+                </when>
+                <when test='status == "3"'>
+                    waiter_hang_time = waiter_hang_time + UNIX_TIMESTAMP(CURDATE()) -
+                    UNIX_TIMESTAMP(status_update_time),
+                </when>
+            </choose>
+            status = 4,
+            service_end_time = now(),
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and team_code = #{teamCode,jdbcType=INTEGER}
+        and create_date = date_sub(CURDATE(), interval 1 day)
+    </update>
+
+    <update id="updateSysBusyTime">
+        update oc_waiter_monitor
+        <set>
+            sys_busy_time = sys_busy_time + #{time}
+        </set>
+        where waiter_code = #{waiterCode,jdbcType=VARCHAR}
+        and team_code = #{teamCode,jdbcType=INTEGER}
+        and create_date = CURDATE()
+    </update>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.waiter.WaiterMapper">
+    <resultMap id="BaseResultMap" type="com.oc.domain.waiter.Waiter">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="team_code" property="teamCode" jdbcType="INTEGER"/>
+        <result column="waiter_name" property="waiterName" jdbcType="VARCHAR"/>
+        <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="shunt" property="shunt" jdbcType="CHAR"/>
+        <result column="cur_reception" property="curReception" jdbcType="INTEGER"/>
+        <result column="max_reception" property="maxReception" jdbcType="INTEGER"/>
+        <result column="auto_reply" property="autoReply" jdbcType="CHAR"/>
+        <result column="reply_msg" property="replyMsg" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, tenant_code, team_code, waiter_name, waiter_code, status, `type`, shunt, cur_reception,
+        max_reception, auto_reply, reply_msg, real_name
+    </sql>
+
+    <select id="login" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM oc_waiter
+        WHERE tenant_code = #{tenantCode,jdbcType=VARCHAR}
+        AND waiter_name = #{waiterName,jdbcType=VARCHAR}
+        AND password = #{password,jdbcType=VARCHAR}
+        AND flag = '1'
+    </select>
+
+    <select id="obtainWaiter" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM oc_waiter
+        WHERE tenant_code = #{tenantCode,jdbcType=VARCHAR}
+        AND waiter_name = #{waiterName,jdbcType=VARCHAR}
+        AND flag = '1'
+    </select>
+
+    <select id="obtainWaiterByCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM oc_waiter
+        WHERE waiter_code = #{waiterCode,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE oc_waiter
+            SET
+            status = #{status, jdbcType=VARCHAR}
+        WHERE
+            id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="updateCurReception">
+        UPDATE oc_waiter
+            SET
+            cur_reception = IFNULL(cur_reception, 0) + #{reception, jdbcType=INTEGER}
+        WHERE
+            id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateCurReceptionByCode">
+        UPDATE oc_waiter
+        SET
+            cur_reception = IFNULL(cur_reception, 0) + #{reception, jdbcType=INTEGER}
+        WHERE
+           waiter_code = #{waiterCode,jdbcType=VARCHAR}
+    </update>
+
+    <update id="waiterLogout">
+        UPDATE oc_waiter
+            SET
+            status = '4'
+        WHERE
+            id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="logout">
+        UPDATE oc_waiter
+        SET cur_reception = 0, status = '4'
+        WHERE waiter_code = #{waiterCode,jdbcType=VARCHAR}
+    </update>
+</mapper>

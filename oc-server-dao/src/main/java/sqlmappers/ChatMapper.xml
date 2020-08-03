@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.chat.ChatMapper">
+    <resultMap id="BaseResultMap" type="com.oc.domain.chat.Chat">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="chat_id" property="chatId" jdbcType="VARCHAR"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="skill_code" property="skillCode" jdbcType="INTEGER"/>
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+        <result column="customer_code" property="customerCode" jdbcType="VARCHAR"/>
+        <result column="waiter_name" property="waiterName" jdbcType="VARCHAR"/>
+        <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR"/>
+        <result column="is_login" property="isLogin" jdbcType="CHAR"/>
+        <result column="is_transfer" property="isTransfer" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="is_effective" property="isEffective" jdbcType="CHAR"/>
+        <result column="waiting_time" property="waitingTime" jdbcType="INTEGER"/>
+        <result column="msg_total" property="msgTotal" jdbcType="INTEGER"/>
+        <result column="waiter_msg_total" property="waiterMsgTotal" jdbcType="INTEGER"/>
+        <result column="customer_msg_total" property="customerMsgTotal" jdbcType="INTEGER"/>
+        <result column="opinion" property="opinion" jdbcType="CHAR"/>
+        <result column="suggest" property="suggest" jdbcType="VARCHAR"/>
+        <result column="device_type" property="deviceType" jdbcType="CHAR"/>
+        <result column="close_type" property="closeType" jdbcType="CHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, chat_id, tenant_code, team_code, skill_code, goods_code customer_name, customer_code,
+      waiter_name, waiter_code, is_login, is_transfer, type,
+      is_effective, waiting_time, msg_total, waiter_msg_total, customer_msg_total, opinion,
+      suggest, device_type, close_type, create_time, end_time
+    </sql>
+
+    <insert id="insert" parameterType="com.oc.domain.chat.Chat">
+        insert into oc_chat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chatId != null">
+                chat_id,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="teamCode != null">
+                team_code,
+            </if>
+            <if test="skillCode != null">
+                skill_code,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="customerName != null">
+                customer_name,
+            </if>
+            <if test="customerCode != null">
+                customer_code,
+            </if>
+            <if test="waiterName != null">
+                waiter_name,
+            </if>
+            <if test="waiterCode != null">
+                waiter_code,
+            </if>
+            <if test="isLogin != null">
+                is_login,
+            </if>
+            <if test="isTransfer != null">
+                is_transfer,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="isEffective != null">
+                is_effective,
+            </if>
+            <if test="waitingTime != null">
+                waiting_time,
+            </if>
+            <if test="msgTotal != null">
+                msg_total,
+            </if>
+            <if test="waiterMsgTotal != null">
+                waiter_msg_total,
+            </if>
+            <if test="customerMsgTotal != null">
+                customer_msg_total,
+            </if>
+            <if test="opinion != null">
+                opinion,
+            </if>
+            <if test="suggest != null">
+                suggest,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="closeType != null">
+                close_type,
+            </if>
+            create_time,
+            <if test="endTime != null">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chatId != null">
+                #{chatId,jdbcType=VARCHAR},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode,jdbcType=VARCHAR},
+            </if>
+            <if test="teamCode != null">
+                #{teamCode,jdbcType=VARCHAR},
+            </if>
+            <if test="skillCode != null">
+                #{skillCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null">
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerCode != null">
+                #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waiterName != null">
+                #{waiterName,jdbcType=VARCHAR},
+            </if>
+            <if test="waiterCode != null">
+                #{waiterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isLogin != null">
+                #{isLogin,jdbcType=CHAR},
+            </if>
+            <if test="isTransfer != null">
+                #{isTransfer,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=CHAR},
+            </if>
+            <if test="isEffective != null">
+                #{isEffective,jdbcType=CHAR},
+            </if>
+            <if test="waitingTime != null">
+                #{waitingTime,jdbcType=INTEGER},
+            </if>
+            <if test="msgTotal != null">
+                #{msgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="waiterMsgTotal != null">
+                #{waiterMsgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="customerMsgTotal != null">
+                #{customerMsgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="opinion != null">
+                #{opinion,jdbcType=CHAR},
+            </if>
+            <if test="suggest != null">
+                #{suggest,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=CHAR},
+            </if>
+            <if test="closeType != null">
+                #{closeType,jdbcType=CHAR},
+            </if>
+            now(),
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateChat" parameterType="com.oc.domain.chat.Chat">
+        update oc_chat
+        <set>
+            <if test="isEffective != null">
+                is_effective = #{isEffective,jdbcType=CHAR},
+            </if>
+            <if test="msgTotal != null">
+                msg_total = #{msgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="waiterMsgTotal != null">
+                waiter_msg_total = #{waiterMsgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="customerMsgTotal != null">
+                customer_msg_total = #{customerMsgTotal,jdbcType=INTEGER},
+            </if>
+            <if test="opinion != null">
+                opinion = #{opinion,jdbcType=CHAR},
+            </if>
+            <if test="suggest != null">
+                suggest = #{suggest,jdbcType=VARCHAR},
+            </if>
+            <if test="closeType != null">
+                close_type = #{closeType,jdbcType=CHAR},
+            </if>
+            end_time = now(),
+        </set>
+        where chat_id = #{chatId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

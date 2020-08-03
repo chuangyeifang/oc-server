@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出
+-->
+<Configuration status="INFO">
+	<!--
+		%d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+		%p : 日志输出格式
+		%c : logger的名称
+		%m : 日志内容，即 logger.info("message")
+		%n : 换行符
+		%C : Java类名
+		%L : 日志输出所在行数
+		%M : 日志输出所在方法名
+		%X : MDC方式获取 如%X{ip}
+		projectName: 项目名称
+	 -->
+	<Appenders>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout>
+				<MarkerPatternSelector defaultPattern="[%d{yyyy-MM-dd HH:mm:ss SSS} %-5p] [%t] %c{2} - %m%n">
+					<PatternMatch key="CLASS" pattern="[%d{yyyy-MM-dd HH:mm:ss SSS} %-5p] [%t] %c{2} - %m%n" />
+				</MarkerPatternSelector>
+			</PatternLayout>
+		</Console>
+		<RollingFile name="INPUT_FILE" fileName="logs/oc-server.log" filePattern="logs/oc-server-%d{yyyy-MM-dd}.log"
+					 ignoreExceptions="false" >
+			<PatternLayout>
+				<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p] projectName : oc-server [%t] (%c:%L) - %m%n</Pattern>
+			</PatternLayout>
+			<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="INPUT_FILE"/>
+			<AppenderRef ref="CONSOLE" />
+		</Root>
+	</Loggers>
+</Configuration>

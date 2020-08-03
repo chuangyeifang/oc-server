@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=X-UA-Compatible content="IE=EmulateIE7">
+    <meta http-equiv=”X-UA-Compatible” content="IE=edge,chrome=1">
+    <title>在线客服</title>
+    <link href="./images/icon.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="./css/chat.min.css">
+</head>
+
+<body>
+    <div class="service-panel">
+        <!-- head -->
+        <div class="header">
+            <h3>
+                在线客服系统
+            </h3>
+        </div>
+        <!-- main -->
+        <div class="service-body clearfix">
+            <!-- left -->
+            <div class="left-main">
+                <div class="chat-service-status clearfix">
+                    <div class="chat-service-status-tip"></div>
+                    <div id="chat_service_status_msg">正在建立连接中，请等候...</div>
+                </div>
+                <!-- show chat -->
+                <div class="show-chat clearfix" id="chatDiv">
+                    <div class="load-chat-more"><a href="javascript://;" id="load_chat_more" style="display: none;">加载更多</a></div>
+                    <div class="p-view" id="msg_box">
+                        <div class="history-up" id="history_up" style="display: none;">以下为新消息</div>
+                    </div>
+                    <!-- 评价成功 -->
+                    <div class="msg-panel evaluate ell" id="opinionSuccess" style="display:none;"><i class="icons"></i>评价成功！</div>
+                    <!-- 重复评价提醒 -->
+                    <div class="msg-panel evaluate ell" id="opinionRepeat" style="display:none;"><i class="icons"></i>您已对客服作出评价！</div>
+                </div>
+                <!--toolbar-->
+                <div class="btn-toolbar clearfix">
+                    <ul class="tool-btn-group">
+                        <li id="set-face" title="表情" unselectable="on" onmousedown="return false"><a href="javascript:;" data-pop="face-pop" unselectable="on" onmousedown="return false"><i class="face"></i></a></li>
+                        <li id="file-btn" title="发送图片"><a href="javascript:;" id="set-file" data-pop="face-file"><i class="upload"></i></a></li>
+                        <li id="manyidu" title="评价"><a href="javascript:;" id="set-evaluate" data-pop="evaluate-pop"><i class="evaluate"></i></a></li>
+                    </ul>
+                    <!-- toolbar pop -->
+                    <!-- 表情选项 -->
+                    <div id="emoji_container" unselectable="on" onmousedown="return false" class="emoji-container" style="width: 427px;height: 144px;position: absolute;top: -151px;left: -24px; ">
+                        <input type='hidden' class="val">
+                    </div>
+                    <!-- 满意度评价 -->
+                    <div class="toolbar-pop evaluate-pop" id="option_box">
+                        <div class="evaluation-head">
+                            <a href="javascript:;" class="icons close-tool"></a>
+                            您对当前客服的服务满意吗？
+                        </div>
+                        <div class="evaluation-body">
+                            <div class="choise-eva">
+                                <label><input name="evaluation" type="radio" value="5" checked />非常满意</label>
+                                <label><input name="evaluation" type="radio" value="4" />满意</label>
+                                <label><input name="evaluation" type="radio" value="3" />一般</label>
+                                <label><input name="evaluation" type="radio" value="2" />不满意</label>
+                                <label><input name="evaluation" type="radio" value="1" />非常不满意</label>
+                            </div>
+                            <dl class="suggest clearfix" id="suggest_box" style="visibility: hidden;">
+                                <dt>建议：</dt>
+                                <dd><textarea name="" id="opinion_desp"></textarea></dd>
+                            </dl>
+                            <div class="sub-evabtn">
+                                <a href="javascript:;" class="cancel">取消</a>
+                                <a href="javascript:;" class="submit" id="opinion_submit">提交</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- chat area -->
+                <div class="chat-area">
+                    <textarea id="message_area" name="Memo" rows="7" cols="20" placeholder="请输入消息(300字内)..."></textarea>
+                </div>
+                <!-- send btns -->
+                <div class="send-btns">
+                    <div class="btn-group">
+                        <a href="javascript:;" class="send-chat" id="send_msg_btn" style="text-align:center;">发送</a>
+                    </div>
+                </div>
+            </div>
+            <!-- right -->
+            <div class="right-slider">
+                <div class="tab-title">
+                    <a href="javascript:;" class="tab-btn active" id="hot_tab">热点问题</a>
+                </div>
+                <div class="tab-body">
+                    <!-- FAQ -->
+                    <div class="tab-list service-qa" style="font-size: 18px; display: block;" id="hot_list">
+                        <ul id="hot_ul">
+                          <li>
+                            <h6>
+                              <a href="javascript:;" class>1. 客服系统技术交流群</a>
+                            </h6>
+                            <div class="answer" style="display: none;">
+                              <i class="icons"></i>
+                              <p style="font-size: 12px;">群QQ: 606173512 申请加入时请输入“客服妹妹”， 否则拒绝通过！</p>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ay-mask">
+        <div class="ay-container">
+            <h3 class="ay-h3">发送图片</h3>
+            <div class="ay-box">
+                <div id="showPic" class="show-pic"></div>
+            </div>
+            <div id="submitOrCancel" class="submitOrCancel">
+                <button id="send-imgb64" style="background-color: #e2231a;">发送</button>
+                <button id="send-imgb64-cancel" style="background-color: #e9e9e9;color: #333333;">取消</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+var conFitScroll = function() {
+    var h = $("#msg_box").height() - $("#chatDiv").height()
+    if (h > 0) {
+        $("#chatDiv").scrollTop(h + 40);
+    }
+}
+</script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/underscore-1.8.2.js"></script>
+<script type="text/javascript" src="./js/pc.min.js"></script>
+<script type="text/javascript" src="./js/jquery.pseudo.js"></script>
+
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>在线客服</title>
+    <link href="./images/icon.png" rel="shortcut icon" />
+    <link rel="stylesheet" href="./css/chat.min.css">
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- head -->
+    <div class="app-main">
+        <div class="left-main">
+            <div class="chat-service-status clearfix">
+                <div class="chat-service-status-tip"></div>
+                <div id="chat_service_status_msg">正在建立连接中，请等候...</div>
+            </div>
+            <!-- 聊天内容-->
+            <div class="show-chat clearfix" id="chatDiv">
+                <div class="load-chat-more"><a href="javascript:void(0)" id="load_chat_more"
+                        style="display: none;">加载更多</a></div>
+                <div class="p-view" id="msg_box">
+                    <div class="history-up" id="history_up" style="display: none;">以下为新消息</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!--上传的表单-->
+            <form style="display: none" id="submit_form" method="post" action="/chat/loadpic.do" target="iframepost">
+                <input type="file" name="file" id="upload_file" accept="image/*">
+            </form>
+        </div>
+
+        <!--满意度-->
+        <div id="option_box" class="ay-mask-star" style="display: none;">
+            <div class="ay-ms-div">
+                <div class="ay-ms-cut">
+                    <div class="suggest-close-icon"></div>
+                </div>
+                <div class="ay-ms-content">
+                    <div class="ay-ms-tips">
+                        请对此次服务做出评价:
+                    </div>
+                    <ul class="ay-star-ul">
+                        <li class="ay-star-ul-li"></li>
+                        <li class="ay-star-ul-li"></li>
+                        <li class="ay-star-ul-li"></li>
+                        <li class="ay-star-ul-li"></li>
+                        <li class="ay-star-ul-li"></li>
+                    </ul>
+                    <div class="textarea-div">
+                        <textarea name="" rows="" cols="" id="inner_sug" placeholder="建议" maxlength="200"></textarea>
+                    </div>
+                    <div class="ay-divivid">
+                        <div class="ay-divivid-span"></div>
+                    </div>
+                </div>
+                <div class="btn-div">
+                    <span id="submit_sug">提交</span>
+                </div>
+            </div>
+        </div>
+
+        <!--提交成功提示-->
+        <div class="m-sbt-suc">
+            <p class="s-tips"></p>
+        </div>
+
+        <!-- “我想”标签部分 -->
+        <div class="marks_info">
+            <div class="mark_title">我想</div>
+            <div class="mark_list">
+                <div class="mark_items" id="mark_list"></div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div id="footerActionBar" style="position: relative;z-index: 1000;">
+            <div class="send-btns">
+                <div class="input-message-box">
+                    <input type="text" id="message_area" name="message" placeholder="请输入消息(300字内)..." />
+                </div>
+                <div data-pop="face-pop" class="click-emoji" id="click-emoji" onmousedown="return false"></div>
+                <div id="input-add-field" class="input-add-field"></div>
+                <div id="send_msg_btn" class="input-send-message">
+                    <span class="send-message-icon"></span>
+                </div>
+                <ul class="box-ul" id="boxUl"></ul>
+            </div>
+            <!--表情选项-->
+            <div id="emoji_container" class="emoji-container" unselectable="on" onmousedown="return false"
+                style="width: 100%; height: 110px;position: relative; display: none;">
+                <input type='hidden' class="val">
+            </div>
+            <!-- 菜单添加区域-->
+            <div id="chat-menu-footer" class="chat-menu-footer">
+                <ul class="ul-chat-menu">
+                    <li class="li-chat-menu">
+                        <div class="chat-menu-footer-item" id="set-file">
+                            <div class="send-img-icon"></div>
+                            <p class="item-text">图片</p>
+                        </div>
+                    </li>
+                    <li class="li-chat-menu">
+                        <div class="chat-menu-footer-item" id="click-star">
+                            <div class="send-suggest-icon"></div>
+                            <p class="item-text">评价</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="send-foot" style="height: auto;padding: 0 10px;position:absolute;margin-bottom: 10px;">
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var conFitScroll = function () {
+        var h = $("#msg_box").height() - $("#chatDiv").height()
+        if (h > 0) {
+            $("#chatDiv").scrollTop(h + 40);
+        }
+    }
+</script>
+<script type="text/javascript" src="./js/exif.js"></script>
+<script type="text/javascript" src="./js/mobileBUGFix.mini.js"></script>
+<script type="text/javascript" src="./js/jquery.form.js"></script>
+<script type="text/javascript" src="./js/underscore-1.8.2.js"></script>
+
+<script type="text/javascript" src="./js/wap.min.js"></script>
+
+</html>

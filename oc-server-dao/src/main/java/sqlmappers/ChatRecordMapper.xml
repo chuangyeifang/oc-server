@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.chat.ChatRecordMapper">
+    <resultMap id="BaseResultMap" type="com.oc.domain.chat.ChatRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="team_code" property="teamCode" jdbcType="INTEGER"/>
+        <result column="chat_id" property="chatId" jdbcType="VARCHAR"/>
+        <result column="message_id" property="messageId" jdbcType="VARCHAR"/>
+        <result column="owner_type" property="ownerType" jdbcType="CHAR"/>
+        <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR"/>
+        <result column="waiter_name" property="waiterName" jdbcType="VARCHAR"/>
+        <result column="customer_code" property="customerCode" jdbcType="VARCHAR"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+        <result column="message_type" property="messageType" jdbcType="CHAR"/>
+        <result column="offline" property="offline" jdbcType="CHAR"/>
+        <result column="revocation" property="revocation" jdbcType="INTEGER"/>
+        <result column="messages" property="messages" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, tenant_code, message_id, team_code, chat_id, owner_type, waiter_code, customer_code,
+        customer_name, message_type, offline, messages,
+        DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time
+    </sql>
+
+    <select id="obtainChatRecordStatistics" resultType="com.oc.dto.chat.ChatRecordStatistics">
+      select owner_type ownerType, count(1) msgCount from
+      oc_chat_record
+      where chat_id = #{chatId,jdbcType=VARCHAR}
+      group by owner_type
+    </select>
+
+    <select id="obtainBefore" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"></include>
+        from oc_chat_record
+        where
+        customer_code = #{customerCode,jdbcType=VARCHAR}
+        and tenant_code = #{tenantCode,jdbcType=VARCHAR}
+        <if test='id != null and id != ""'>
+            and a.id &lt; #{id}
+        </if>
+        and revocation = 1
+        order by create_time DESC, id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.oc.domain.chat.ChatRecord">
+        insert into oc_chat_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="teamCode != null">
+                team_code,
+            </if>
+            <if test="chatId != null">
+                chat_id,
+            </if>
+            <if test="messageId != null">
+                message_id,
+            </if>
+            <if test="ownerType != null">
+                owner_type,
+            </if>
+            <if test="waiterCode != null">
+                waiter_code,
+            </if>
+            <if test="waiterName != null">
+                waiter_name,
+            </if>
+            <if test="customerCode != null">
+                customer_code,
+            </if>
+            <if test="customerName != null">
+                customer_name,
+            </if>
+            <if test="messageType != null">
+                message_type,
+            </if>
+            <if test="offline != null">
+                offline,
+            </if>
+            <if test="revocation != null">
+                revocation,
+            </if>
+            <if test="messages != null">
+                messages,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode,jdbcType=VARCHAR},
+            </if>
+            <if test="teamCode != null">
+                #{teamCode,jdbcType=VARCHAR},
+            </if>
+            <if test="chatId != null">
+                #{chatId,jdbcType=VARCHAR},
+            </if>
+            <if test="messageId != null">
+                #{messageId,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerType != null">
+                #{ownerType,jdbcType=CHAR},
+            </if>
+            <if test="waiterCode != null">
+                #{waiterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waiterName != null">
+                #{waiterName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerCode != null">
+                #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null">
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="messageType != null">
+                #{messageType,jdbcType=CHAR},
+            </if>
+            <if test="offline != null">
+                #{offline,jdbcType=CHAR},
+            </if>
+            <if test="revocation != null">
+                #{revocation,jdbcType=INTEGER},
+            </if>
+            <if test="messages != null">
+                #{messages,jdbcType=VARCHAR},
+            </if>
+            <choose>
+                <when test="createTime != null">
+                    #{createTime,jdbcType=TIMESTAMP}
+                </when>
+                <otherwise>
+                    NOW()
+                </otherwise>
+            </choose>
+        </trim>
+    </insert>
+
+    <update id="revocationChatRecord" parameterType="com.oc.domain.chat.ChatRecord">
+      update oc_chat_record
+      set revocation = #{revocation, jdbcType=INTEGER}
+      where
+          chat_id = #{chatId, jdbcType=VARCHAR}
+      and message_id = #{messageId, jdbcType=VARCHAR}
+      and create_time > DATE_ADD(now(),INTERVAL -2 minute)
+    </update>
+</mapper>

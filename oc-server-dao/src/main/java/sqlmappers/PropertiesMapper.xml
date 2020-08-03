@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.properties.PropertiesMapper" >
+  <resultMap id="BaseResultMap" type="com.oc.domain.properties.Properties" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR" />
+    <result column="team_code" property="teamCode" jdbcType="INTEGER" />
+    <result column="timeout_tip_message" property="timeoutTipMessage" jdbcType="VARCHAR" />
+    <result column="timeout_close_message" property="timeoutCloseMessage" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, tenant_code, team_code, timeout_tip_message, timeout_close_message
+  </sql>
+  
+  <select id="obtainProperties" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from oc_properties
+    where 
+    tenant_code = #{tenantCode,jdbcType=INTEGER}
+	limit 1
+  </select>
+  
+</mapper>

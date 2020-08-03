@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+mybatis:
+  mapper-locations:
+    - classpath:sqlmappers/*Mapper.xml
+  type-aliases-package: com.oc.domain
+pagehelper:
+  helper-dialect: mysql
+  support-methods-arguments: true
+  row-bounds-with-count: true
+  offset-as-page-num: true
+  params: count=countSql
+  reasonable: true
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: abcd-1234
+      url: jdbc:mysql://127.0.0.1:3306/oc_db?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+    type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    cache: false
+    mode: HTML5
+    servlet:
+      content-type: text/html; charset=utf-8
+    encoding: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  hazelcast:
+    config: classpath:hazelcast-uat.xml
+custom:
+  kafka:
+    open: true
+    broker-list: localhost:9092,localhost:9092,localhost:9092
+    serializer-class: kafka.serializer.StringEncoder
+    request-required-acks: 1

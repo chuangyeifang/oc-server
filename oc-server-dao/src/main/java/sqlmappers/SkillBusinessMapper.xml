@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.skill.SkillBusinessMapper">
+    <resultMap id="BaseResultMap" type="com.oc.domain.skill.SkillBusiness">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="origin" property="origin" jdbcType="VARCHAR"/>
+        <result column="skill_code" property="skillCode" jdbcType="INTEGER"/>
+        <result column="business_code" property="businessCode" jdbcType="VARCHAR"/>
+        <result column="business_name" property="businessName" jdbcType="VARCHAR"/>
+        <result column="flag" property="flag" jdbcType="CHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, tenant_code, origin, skill_code, business_code, business_name, flag, create_time
+    </sql>
+
+  <select id="obtainSkillBusiness" resultMap="BaseResultMap">
+  	SELECT
+		<include refid="Base_Column_List"></include>
+	FROM
+		oc_skill_business
+	WHERE
+		tenant_code = #{tenantCode,jdbcType=VARCHAR}
+	AND business_code = #{businessCode,jdbcType=VARCHAR}
+	AND flag = '1'
+  </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from oc_skill_business
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      delete from oc_skill_business
+      where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.oc.domain.skill.SkillBusiness">
+        insert into oc_skill_business
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tenantCode != null">
+                tenant_code,
+            </if>
+            <if test="origin != null">
+                origin,
+            </if>
+            <if test="skillCode != null">
+                skill_code,
+            </if>
+            <if test="businessCode != null">
+                business_code,
+            </if>
+            <if test="businessName != null">
+                business_name,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="tenantCode != null">
+                #{tenantCode,jdbcType=VARCHAR},
+            </if>
+            <if test="origin != null">
+                #{origin,jdbcType=VARCHAR},
+            </if>
+            <if test="skillCode != null">
+                #{skillCode,jdbcType=INTEGER},
+            </if>
+            <if test="businessCode != null">
+                #{businessCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessName != null">
+                #{businessName,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.oc.domain.skill.SkillBusiness">
+        update oc_skill_business
+        <set>
+            <if test="tenantCode != null">
+                tenant_code = #{tenantCode,jdbcType=VARCHAR},
+            </if>
+            <if test="origin != null">
+                origin = #{origin,jdbcType=VARCHAR},
+            </if>
+            <if test="skillCode != null">
+                skill_code = #{skillCode,jdbcType=INTEGER},
+            </if>
+            <if test="businessCode != null">
+                business_code = #{businessCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessName != null">
+                business_name = #{businessName,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

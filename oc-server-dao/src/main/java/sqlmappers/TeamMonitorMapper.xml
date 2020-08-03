@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oc.mapper.team.TeamMonitorMapper" >
+  <resultMap id="BaseResultMap" type="com.oc.domain.team.TeamMonitor" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR" />
+    <result column="team_code" property="teamCode" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="wait_count" property="waitCount" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="DATE" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, tenant_code, team_code, start_time, end_time, reception_count, max_reception_count, 
+    online_count, idl_count, wait_count, valid_count, create_date
+  </sql>
+
+  <select id="obtainYesterdayTeamMonitor" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from oc_team_monitor
+    where team_code = #{teamCode,jdbcType=INTEGER}
+    and tenant_code = #{tenantCode, jdbcType=VARCHAR}
+    and create_date = DATE_SUB(CURDATE(),INTERVAL 1 DAY)
+  </select>
+
+  <insert id="insertSelective" parameterType="com.oc.domain.team.TeamMonitor" >
+    insert into oc_team_monitor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tenantCode != null" >
+        tenant_code,
+      </if>
+      <if test="teamCode != null" >
+        team_code,
+      </if>
+        start_time,
+      <if test="waitCount != null" >
+        wait_count,
+      </if>
+        create_date,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tenantCode != null" >
+        #{tenantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="teamCode != null" >
+        #{teamCode,jdbcType=VARCHAR},
+      </if>
+        NOW(),
+      <if test="waitCount != null" >
+        #{waitCount,jdbcType=INTEGER},
+      </if>
+      CURDATE(),
+    </trim>
+  </insert>
+
+  <update id="updateWaitCount" >
+    update oc_team_monitor
+    <set >
+        wait_count = #{waitCount,jdbcType=INTEGER},
+    </set>
+    where team_code = #{teamCode,jdbcType=INTEGER}
+    and tenant_code = #{tenantCode, jdbcType=VARCHAR}
+    and create_date = CURDATE()
+  </update>
+
+
+</mapper>
