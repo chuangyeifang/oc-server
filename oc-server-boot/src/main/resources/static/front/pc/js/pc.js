@@ -361,10 +361,10 @@ var Request = {
   }
 };
 var Constant = {
-  build_success: "建立会话成功！",
-  waitting_tip: "已进入服务队列，当前排队人数 {0}, 请您耐心等候...",
-  service_info: "客服工号 {0}， 正在为您提供服务.",
-  close_tip: "当前会话已结束，回复消息继续咨询."
+  build_success: "会话创建成功！",
+  waitting_tip: "当前客服繁忙，已加入等候队列（您前面还有 {0} 个人）请您耐心等候...",
+  service_info: "客服工号 {0} 为您提供服务~",
+  close_tip: "会话已结束（回复再次咨询）."
 };
 var subId = 1000;
 var Common = {
@@ -985,7 +985,7 @@ var Service = {
   }
 };
 /**
- * @author chuangyeifang
+ * @author pengzq
  * @since 2019.06.03
  * @version v1.0
  */
@@ -1246,7 +1246,7 @@ var HpClient = function HpClient(opts) {
   };
 };
 /**
- * @author chuangyeifang
+ * @author pengzq
  * @since 2019.06.03
  * @version v1.0
  */
