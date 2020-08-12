@@ -9,9 +9,11 @@
 
 ### 初始化数据库/配置
 ```
-  Mysql 导入oc_db.sql 执行
-  配置application-dev.yml或者application-uat.yml文件， 更新数据库IP/PORT/用户/密码，默认为（127.0.0.1:3306?oc_db&user_name=root&password=123456）
-  如果集群部署，请修改hazelcast-dev.xml或者hazelcast-uat.xml，具体规则可参考hazelcast官网（https://docs.hazelcast.org/docs/3.12.7/manual/html-single/index.html#setting-up-clusters）
+  1. Mysql 导入oc_db.sql，SQL脚本在oc-server/sources/db/目录下
+  2. 配置application-dev.yml或者application-uat.yml文件，
+     更新数据库IP/PORT/用户/密码，默认为（127.0.0.1:3306?oc_db&user_name=root&password=123456）
+  3. 如果集群部署，请修改hazelcast-dev.xml或者hazelcast-uat.xml，
+     具体规则可参考hazelcast官网（https://docs.hazelcast.org/docs/3.12.7/manual/html-single/index.html#setting-up-clusters）
 ```
       
 ### oc-server部署步骤
