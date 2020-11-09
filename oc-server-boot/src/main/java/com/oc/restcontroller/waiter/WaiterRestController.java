@@ -4,12 +4,15 @@ import com.oc.auth.UserStore;
 import com.oc.auth.WaiterAuthCoder;
 import com.oc.auth.WaiterInfo;
 import com.oc.domain.waiter.Waiter;
+import com.oc.dto.waiter.WaiterOnlines;
 import com.oc.restcontroller.AbstractBasicRestController;
 import com.oc.service.user.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 客服管理
@@ -38,6 +41,14 @@ public class WaiterRestController extends AbstractBasicRestController {
 
         String token = WaiterAuthCoder.encode(waiter);
         return success(token);
+    }
+
+    @PostMapping("onlines")
+    public Object list() {
+        WaiterInfo userInfo = UserStore.get();
+        String tenantCode = userInfo.getTenantCode();
+        List<WaiterOnlines> list = waiterService.obtainWaiterOnlines(tenantCode);
+        return success(list);
     }
 
     @PostMapping(value = "logout")

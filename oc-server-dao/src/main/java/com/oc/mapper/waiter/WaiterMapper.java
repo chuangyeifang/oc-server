@@ -1,8 +1,11 @@
 package com.oc.mapper.waiter;
 
 import com.oc.domain.waiter.Waiter;
+import com.oc.dto.waiter.WaiterOnlines;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 客服基础操作
@@ -30,6 +33,13 @@ public interface WaiterMapper {
      */
     Waiter obtainWaiter(@Param("tenantCode")String tenantCode,
                         @Param("waiterName")String waiterName);
+
+    /**
+     * 获取当前租户在线客服
+     * @param tenantCode
+     * @return
+     */
+    List<WaiterOnlines> obtainWaiterOnlines(@Param("tenantCode") String tenantCode);
 
     /**
      * 根据id 更新 接待数

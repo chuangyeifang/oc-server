@@ -4,10 +4,13 @@
 package com.oc.service.user.impl;
 
 import com.oc.domain.waiter.Waiter;
+import com.oc.dto.waiter.WaiterOnlines;
 import com.oc.mapper.waiter.WaiterMapper;
 import com.oc.service.user.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description: 客服操作
@@ -29,6 +32,11 @@ public class WaiterServiceImpl implements WaiterService {
 	@Override
 	public Waiter obtainWaiter(String tenantCode, String waiterName) {
 		return waiterMapper.obtainWaiter(tenantCode, waiterName);
+	}
+
+	@Override
+	public List<WaiterOnlines> obtainWaiterOnlines(String tenantCode) {
+		return waiterMapper.obtainWaiterOnlines(tenantCode);
 	}
 
 	@Override

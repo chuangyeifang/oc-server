@@ -4,6 +4,9 @@
 package com.oc.service.user;
 
 import com.oc.domain.waiter.Waiter;
+import com.oc.dto.waiter.WaiterOnlines;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -29,6 +32,13 @@ public interface WaiterService {
 	 * @return
 	 */
 	Waiter obtainWaiter(String tenantCode, String waiterName);
+
+	/**
+	 * 获取客服
+	 * @param tenantCode
+	 * @return
+	 */
+	List<WaiterOnlines> obtainWaiterOnlines(String tenantCode);
 
 	/**
 	 * 根据id更新当前接待量
