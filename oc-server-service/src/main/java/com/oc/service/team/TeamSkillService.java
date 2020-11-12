@@ -4,6 +4,9 @@
 package com.oc.service.team;
 
 import com.oc.domain.team.TeamSkill;
+import com.oc.dto.team.TeamSkillDto;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -14,4 +17,6 @@ import com.oc.domain.team.TeamSkill;
 public interface TeamSkillService {
 	
 	TeamSkill obtainTeamSkill(String tenantCode, Integer skillCode);
+
+	List<TeamSkillDto> obtainTeamSkills(String tenantCode, Integer teamCode);
 }

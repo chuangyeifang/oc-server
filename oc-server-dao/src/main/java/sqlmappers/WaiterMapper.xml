@@ -22,7 +22,6 @@
         <result column="team_name" property="teamName" jdbcType="VARCHAR"/>
         <result column="sort" property="sort" jdbcType="INTEGER"/>
         <collection property="waiters" ofType="com.oc.dto.waiter.WaiterDto">
-            <id column="id" property="id" jdbcType="BIGINT"/>
             <result column="waiter_name" property="waiterName" jdbcType="VARCHAR"/>
             <result column="waiter_code" property="waiterCode" jdbcType="VARCHAR"/>
             <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>

@@ -25,7 +25,7 @@ public class WaiterMonitorRestController extends AbstractBasicRestController {
         WaiterInfo waiterInfo = UserStore.get();
 
         WaiterMonitor waiterMonitor = waiterMonitorService.obtainWaiterMonitorOfDay(waiterInfo.getWaiterCode());
-        if (null != waiterInfo) {
+        if (null != waiterInfo && waiterMonitor != null) {
             return success(waiterMonitor.getReceptionCount());
         } else {
             return success(0);

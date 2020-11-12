@@ -18,7 +18,6 @@ import lombok.ToString;
 @ToString
 public class WaiterDto {
 
-	private Long id;
 	private String tenantCode;
 	private String teamCode;
 	private String teamName;
