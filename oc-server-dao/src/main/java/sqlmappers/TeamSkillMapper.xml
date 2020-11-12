@@ -30,16 +30,16 @@
 
     <select id="obtainTeamSkills" resultMap="TeamSkillsMap">
         SELECT
-        a.id, a.tenant_code, a.team_code, a.skill_code, a.skill_name, a.flag,
-        DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') create_time,
-        b.team_name
+            a.id, a.tenant_code, a.team_code, a.skill_code, a.skill_name, a.flag,
+            DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') create_time,
+            b.team_name
         FROM oc_team_skill a
         LEFT JOIN oc_team b ON a.team_code = b.team_code
         WHERE
-        a.flag = '1'
-        AND b.flag = '1'
-        AND a.tenant_code = 1
-        AND a.team_code = 1
+            a.tenant_code = #{tenantCode,jdbcType=VARCHAR}
+            AND a.team_code = #{teamCode,jdbcType=INTEGER}
+            ANDa.flag = '1'
+            AND b.flag = '1'
         ORDER BY a.create_time DESC
     </select>
 
